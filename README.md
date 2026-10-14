@@ -2,6 +2,39 @@
 
 A continuous, read-only ERC-20 `Transfer` event monitor using **Pharos Chain MCP `get_logs`**. Built for the 50-point Easy Agent Arena task.
 
+## Verified WPROS capture (October 2026)
+
+Public evidence: [Dashboard](https://trantanlong2411-droid.github.io/pharos-event-log-monitor/) · [Saved events](./verified-events.json) · [Deduplication checker](./check-events.cjs).
+
+- **Contract:** `0x52c48d4213107b20bc583832b0d951fb9ca8f0b0` (wrapped PROS, **WPROS**)
+- **Chain:** Pharos Mainnet, 1672.
+- **Decimals:** 18, verified via `eth_call` on `decimals()` at block 20242371, alongside `name()` and `symbol()`.
+- **Transaction example:** [0xefa32f…fc6011f0](https://www.pharosscan.xyz/tx/0xefa32f8779f6f8c70dbda4c0a8a198452c291ca66993afdcb6911670fc6011f0), block 20240591, log index 1 and 6 from this contract.
+- **Replay:** Scanned blocks 20240591–20240790; 8 logs initially captured, then rerun returned `logs=8 new=0`.
+- **Continuous mode:** The local monitor subsequently scanned new blocks and emitted `NEW EVENT` entries (including block 20242295).
+- **Saved snapshot:** 16 captured events; `node check-events.cjs` confirmed 16 unique event IDs, no duplicates.
+
+This site is a static **published snapshot**, not a 24/7 hosted monitor. Run `npm start` locally to perform live polling. Saved amounts originally used the script's assumed 18 decimals; this has since been verified for the monitored WPROS contract with `eth_call`.
+
+### Reproduce the captured contract
+
+On Windows PowerShell, in the project directory:
+
+```powershell
+npm install
+npm run check
+$env:CONTRACT_ADDRESS="0x52c48d4213107b20bc583832b0d951fb9ca8f0b0"
+$env:START_BLOCK="20240591"
+npm run replay
+npm run replay
+Remove-Item Env:START_BLOCK -ErrorAction SilentlyContinue
+npm start
+```
+
+If local `monitor-state.json` was created for a different contract, rename it as a backup before starting. Similarly, keep backed-up event snapshots separate when switching contracts. To verify the published JSON, download `verified-events.json` as `events.json` and run `node check-events.cjs`; alternatively inspect the source of the two scripts in this repository.
+
+---
+
 ## Requirements
 
 - Node.js 20+
