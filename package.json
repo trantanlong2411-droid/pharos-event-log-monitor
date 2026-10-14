@@ -1,0 +1,17 @@
+{
+  "name": "pharos-event-log-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node monitor.js",
+    "replay": "node monitor.js --replay",
+    "check": "node --check monitor.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "ethers": "^6.0.0"
+  },
+  "engines": { "node": ">=20" }
+}
